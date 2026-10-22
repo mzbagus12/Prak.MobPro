@@ -1,0 +1,77 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../viewmodel/tasbih_controller.dart';
+
+class Home extends StatelessWidget {
+  const Home({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final TasbihController controller = Get.put(TasbihController());
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Tasbih Digital GetX'),
+        backgroundColor: const Color(0xFF2E7D32),
+        foregroundColor: Colors.white,
+      ),
+      backgroundColor: const Color.fromARGB(255, 119, 210, 145),
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.only(bottom: 80),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Obx(
+                  () => FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      '${controller.counter.value.round()}',
+                      style: const TextStyle(fontSize: 250),
+                    ),
+                  ),
+                ),
+                Obx(
+                  () => Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                    child: LinearProgressIndicator(
+                      value: controller.progress.value / 100,
+                      backgroundColor: Colors.white54,
+                      color: Colors.amberAccent.shade400,
+                      minHeight: 15,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 75),
+                ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(50)),
+                  child: Semantics(
+                      label: 'Tambah hitungan',
+                      button: true,
+                      child: InkWell(
+                    onTap: controller.incrementCounter,
+                    child: Container(
+                      decoration: const BoxDecoration(color: Colors.white),
+                      padding: const EdgeInsets.all(30),
+                      child: const Icon(Icons.fingerprint, size: 100),
+                    ),
+                  ),
+                    ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+          tooltip: 'Reset hitungan',
+        onPressed: controller.resetCounter,
+        backgroundColor: Colors.white,
+        child: const Icon(Icons.refresh_outlined, color: Colors.black),
+      ),
+    );
+  }
+}
